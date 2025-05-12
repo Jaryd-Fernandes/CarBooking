@@ -5,16 +5,15 @@ import java.sql.*;
 import javax.swing.*;
 import com.mycompany.carbookingsystem.CarUI.CarItem;
 
-import com.mycompany.carbookingsystem.CarItem;
 
 public class DeleteBookedCar  extends JFrame{
-    
+    String licence;
     String userEmail;
-    ComboBox<CarItem> carBox = new JComboBox<>();
+    JComboBox<CarItem> carBox = new JComboBox<>();
 
     JButton book,delete;
     JTextField returnDateField;
-    
+   
     class CarItem {
     String registrationNumber;
     String model;
@@ -38,7 +37,7 @@ public class DeleteBookedCar  extends JFrame{
         setLocation(500,200);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Delete Booked car");
+        setTitle("Delete Booked car"); 
         getContentPane().setBackground(Color.WHITE);
         setVisible(true);
         
@@ -64,12 +63,20 @@ public class DeleteBookedCar  extends JFrame{
          try {
         DBHelper dbHelper = new DBHelper(); // create DBHelper instance
         Connection conn = dbHelper.getConnection();
+        
+        String query = "SELECT * FROM customer ";
+        Statement stemt = conn.createStatement();
+        ResultSet rx = stemt.executeQuery(query);
+        while (rx.next()) {
+            licence = rx.getString("driving_licence_number");
+                  
+        }
+        
+        
 
-        String sql = "SELECT registration_number, model FROM car WHERE availability='Booked'";
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        //ResultSet rs1 = stmt.executeQuery(sql);
-
+        String sql = "SELECT c.registration_number, c.model FROM car c JOIN booking b ON c.registration_number = b.registration_number WHERE c.availability = 'Booked' AND b.licence_number = '"+licence+"' ";
+    Statement stmt = conn.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
         while (rs.next()) {
             String reg = rs.getString("registration_number");
             String model = rs.getString("model");
@@ -87,7 +94,8 @@ public class DeleteBookedCar  extends JFrame{
         try{
             DBHelper dbHelper = new DBHelper(); 
             Connection conn = dbHelper.getConnection();
-            CarUI.CarItem selectedCar = (CarUI.CarItem) carBox.getSelectedItem();
+           CarItem selectedCar = (CarItem) carBox.getSelectedItem();
+
             String regNo = selectedCar.registrationNumber;
             
             String updateSQL = "UPDATE car SET availability='Available' WHERE registration_number=?";
@@ -95,7 +103,7 @@ public class DeleteBookedCar  extends JFrame{
             ps3.setString(1, regNo);
             ps3.executeUpdate();
 
-            JOptionPane.showMessageDialog(this, "Car booked successfully!");
+            JOptionPane.showMessageDialog(this, "Car booking canceled successfully!");
             
             setVisible(false);
             new MainMenu().setVisible(true);

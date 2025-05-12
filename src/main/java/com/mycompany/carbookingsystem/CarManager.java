@@ -13,23 +13,58 @@ public class CarManager extends JFrame implements ActionListener {
     public CarManager() {
         setTitle("Manage Cars");
         setSize(400, 500);
-        setLayout(new GridLayout(7, 2));
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocation(500,200);
+        setLayout(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.WHITE);
+        setVisible(true);
 
-        makeField = new JTextField(); modelField = new JTextField();
-        yearField = new JTextField(); mileageField = new JTextField();
-        regField = new JTextField();
+
+        JLabel l1 = new JLabel("Reg No:");
+        l1.setBounds(30,30,150,25);
+        add(l1);
+        regField = new JTextField(); 
+        regField.setBounds(150,30,200,25);
+        add(regField);
+        
+        JLabel l2 = new JLabel("Make:");
+        l2.setBounds(30,90,150,25);
+        add(l2); 
+        makeField = new JTextField();
+        makeField.setBounds(150,90,200,25);
+        add(makeField);
+        
+        JLabel l3 = new JLabel("Model:");
+        l3.setBounds(30,150,150,25);
+        add(l3); 
+        modelField = new JTextField();
+        modelField.setBounds(150,150,200,25);
+        add(modelField);
+        
+        JLabel l4 = new JLabel("Year:");
+        l4.setBounds(30,210,150,25);
+        add(l4); 
+        yearField = new JTextField();
+        yearField.setBounds(150,210,200,25);
+        add(yearField);
+        
+        JLabel l5 = new JLabel("Mileage:");
+        l5.setBounds(30,270,150,25);
+        add(l5); 
+        mileageField = new JTextField();
+        mileageField.setBounds(150,270,200,25);
+        add(mileageField);
+        
+        JLabel l6 = new JLabel("Category ID:");
+        l6.setBounds(30,330,150,25);
+        add(l6);
         categoryIdBox = new JComboBox<>(new String[]{"SEDAN", "SUV", "HATCHBACK"});
+        categoryIdBox.setBounds(150,330,200,25);
+        add(categoryIdBox);
 
-        add(new JLabel("Reg No:")); add(regField);
-        add(new JLabel("Make:")); add(makeField);
-        add(new JLabel("Model:")); add(modelField);
-        add(new JLabel("Year:")); add(yearField);
-        add(new JLabel("Mileage:")); add(mileageField);
-        add(new JLabel("Category ID:")); add(categoryIdBox);
-
-        addBtn = new JButton("Add Car"); add(addBtn);
+        addBtn = new JButton("Add Car"); 
+        addBtn.setBounds(200,380,90,30);
+        add(addBtn);
         addBtn.addActionListener(this);
         setVisible(true);
     }

@@ -32,24 +32,38 @@ public class CarUI extends JFrame {
 
     public CarUI(String userEmail) {   //double Cost
         this.userEmail = userEmail;
-        //this.Cost= Cost;
+        
+        setSize(500, 300);
+        setLocation(500,200);
+        setLayout(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Book a Car");
-        setSize(400, 200);
-        setLayout(new GridLayout(3, 2));
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.WHITE);
+        setVisible(true);
 
         carBox = new JComboBox<>();
-        returnDateField = new JTextField();
-        bookBtn = new JButton("Book");
-        add(new JLabel("Select Car:"));
+        carBox.setBounds(210,30,200,25);
         add(carBox);
-        add(new JLabel("Return Date (YYYY-MM-DD):"));
+        
+        JLabel sc = new JLabel("Select Car:");
+        sc.setBounds(40, 30, 150, 25);
+        add(sc);
+        
+        JLabel l2 = new JLabel("Return Date (YYYY-MM-DD):");
+        l2.setBounds(40, 90, 190, 30);
+        add(l2);
+        
+        returnDateField = new JTextField();
+        returnDateField.setBounds(210, 90, 200, 30);
         add(returnDateField);
+        
+        bookBtn = new JButton("Book");
+        bookBtn.setBounds(200,190,90,30);
+        bookBtn.addActionListener(e -> bookCar());
         add(bookBtn);
         
       
-        bookBtn.addActionListener(e -> bookCar());
+        
 
         setVisible(true);
         loadAvailableCars();
@@ -105,7 +119,6 @@ public class CarUI extends JFrame {
             //Public String costField;
             
             //amount issus fix changes
-            
             
             String costSql = "SELECT cc.cost_per_day " +
                  "FROM car c JOIN car_category cc ON c.category_id = cc.category_id " +

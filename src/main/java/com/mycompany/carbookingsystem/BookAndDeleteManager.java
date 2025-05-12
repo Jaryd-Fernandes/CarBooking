@@ -30,6 +30,7 @@ public class BookAndDeleteManager extends JFrame implements ActionListener{
         l1.setBounds(160,70,250,25);
         add(l1);
         book = new JButton("Book");
+        book.addActionListener(this);
         book.setBounds(160,90,140,40);
         add(book);
         
@@ -39,6 +40,7 @@ public class BookAndDeleteManager extends JFrame implements ActionListener{
         add(l2);
         delete = new JButton("Delete");
         delete.setBounds(160,180,140,40);
+        delete.addActionListener(this);
         add(delete);
         
         }

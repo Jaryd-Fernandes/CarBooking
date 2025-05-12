@@ -11,19 +11,52 @@ public class CustomerLoginRegister extends JFrame {
 
     public CustomerLoginRegister() {
         setTitle("Customer Login/Register");
-        setSize(400, 300);
+        setSize(600, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(7, 2));
-        setLocationRelativeTo(null);
+        setLayout(null);
+        setLocation(500,100);
+        getContentPane().setBackground(Color.WHITE);
+        setVisible(true);
 
-        add(new JLabel("Email:")); emailField = new JTextField(); add(emailField);
-        add(new JLabel("Password:")); passwordField = new JTextField(); add(passwordField);
-        add(new JLabel("Name:")); nameField = new JTextField(); add(nameField);
-        add(new JLabel("Phone:")); phoneField = new JTextField(); add(phoneField);
-        add(new JLabel("Licence No:")); licenceField = new JTextField(); add(licenceField);
+        JLabel l1 = new JLabel("Email: ");
+        l1.setBounds( 40, 30, 150, 25);
+        add(l1);
+        emailField = new JTextField();
+        emailField.setBounds( 150, 30, 200, 25);
+        add(emailField);
+        
+        JLabel l2 = new JLabel("Password:"); 
+        l2.setBounds(40,90,150,25);
+        add(l2);
+        passwordField = new JTextField();
+        passwordField.setBounds( 150, 90, 200, 25);
+        add(passwordField);
+        
+        JLabel l3 = new JLabel("Name:");
+        l3.setBounds(40,150,150,25);
+        add(l3);
+        nameField = new JTextField(); 
+        nameField.setBounds(150,150,200,25);
+        add(nameField);
+        
+        JLabel l4 = new JLabel("Phone:");
+        l4.setBounds(40,210,150,25);
+        add(l4); 
+        phoneField = new JTextField(); 
+        phoneField.setBounds(150,210,200,25);
+        add(phoneField);
+        
+        JLabel l5 = new JLabel("Licence No:");
+        l5.setBounds(40,270,150,25);
+        add(l5); 
+        licenceField = new JTextField(); 
+        licenceField.setBounds(150,270,200,25);
+        add(licenceField);
 
         loginBtn = new JButton("Login"); 
+        loginBtn.setBounds(70,330,100,30);
         registerBtn = new JButton("Register");
+        registerBtn.setBounds(190,330,100,30);
         add(loginBtn); add(registerBtn);
 
         loginBtn.addActionListener(e -> login());
@@ -53,11 +86,11 @@ public class CustomerLoginRegister extends JFrame {
                 JOptionPane.showMessageDialog(this, "Login successful!");
                 new BookAndDeleteManager(emailField.getText());
                 //new CarUI(costField.getText());
-                //dispose();
+                setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid credentials.");
             }
-            setVisible(false);
+            
             //rs.close();
             //ps.close();
             //conn.close();
