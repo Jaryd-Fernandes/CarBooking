@@ -61,10 +61,10 @@ public class DeleteBookedCar  extends JFrame{
     
     void loadBookedCars() {
          try {
-        DBHelper dbHelper = new DBHelper(); // create DBHelper instance
+        DBCon dbHelper = new DBCon(); // create DBCon instance
         Connection conn = dbHelper.getConnection();
         
-        String query = "SELECT * FROM customer ";
+        /*String query = "SELECT * FROM customer ";
         Statement stemt = conn.createStatement();
         ResultSet rx = stemt.executeQuery(query);
         while (rx.next()) {
@@ -88,11 +88,58 @@ public class DeleteBookedCar  extends JFrame{
     } catch (SQLException e) {
         e.printStackTrace();
     }
+    }*/
+  
+        // Step 1: Get licence number for the given user email
+        String licQuery = "SELECT driving_licence_number FROM customer WHERE email_id = ?";
+        PreparedStatement pLic = conn.prepareStatement(licQuery);
+        pLic.setString(1, userEmail);
+        ResultSet licRs = pLic.executeQuery();
+
+        if (licRs.next()) {
+            licence = licRs.getString("driving_licence_number");
+        } else {
+            JOptionPane.showMessageDialog(this, "No customer found with this email.");
+            return;
+        }
+
+        // Step 2: Get booked cars using the licence number
+        String sql = "SELECT c.registration_number, c.model " +
+                     "FROM car c " +
+                     "JOIN booking b ON c.registration_number = b.registration_number " +
+                     "WHERE c.availability = 'Booked' AND b.licence_number = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, licence);
+        ResultSet rs = ps.executeQuery();
+
+        boolean found = false;
+        while (rs.next()) {
+            String reg = rs.getString("registration_number");
+            String model = rs.getString("model");
+            System.out.println("DEBUG: Found booked car - " + reg + " (" + model + ")");
+            carBox.addItem(new CarItem(reg, model));
+            found = true;
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "No booked cars found for this user.");
+        }
+
+        rs.close();
+        ps.close();
+        conn.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error loading booked cars: " + e.getMessage());
     }
+}
+
+
     
     void deleteCar(){
         try{
-            DBHelper dbHelper = new DBHelper(); 
+            DBCon dbHelper = new DBCon(); 
             Connection conn = dbHelper.getConnection();
            CarItem selectedCar = (CarItem) carBox.getSelectedItem();
 

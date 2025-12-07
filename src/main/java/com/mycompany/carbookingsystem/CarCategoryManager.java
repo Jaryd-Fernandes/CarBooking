@@ -48,7 +48,7 @@ public void actionPerformed(ActionEvent e){
         
         
          try {
-            DBHelper db = new DBHelper();
+            DBCon db = new DBCon();
             Connection conn = db.getConnection();
             String sql = "INSERT INTO car_category (category_id,name, number_of_person, cost_per_day, late_fees) VALUES (?,?, ?, ?, ?)";
            // Connection connection = conn.connect();

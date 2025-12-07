@@ -16,7 +16,7 @@ public class CarManager extends JFrame implements ActionListener {
         setLocation(500,200);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        getContentPane().setBackground(Color.WHITE);
+        getContentPane().setBackground(Color.PINK);
         setVisible(true);
 
 
@@ -29,7 +29,7 @@ public class CarManager extends JFrame implements ActionListener {
         
         JLabel l2 = new JLabel("Make:");
         l2.setBounds(30,90,150,25);
-        add(l2); 
+        add(l2);  
         makeField = new JTextField();
         makeField.setBounds(150,90,200,25);
         add(makeField);
@@ -82,7 +82,7 @@ public class CarManager extends JFrame implements ActionListener {
 
         
         try {
-            DBHelper db = new DBHelper();
+            DBCon db = new DBCon();
             Connection conn = db.getConnection();
             System.out.println("DEBUG:connection="+conn);
             String sql = "INSERT INTO car (make, model, model_year, mileage, registration_number, availability, category_id) VALUES (?, ?, ?, ?, ?, 'Available', ?)";

@@ -7,59 +7,91 @@ import java.sql.*;
 
 public class ViewBooking extends JFrame {
 
-    JTable table;
-    DefaultTableModel model;
+    JTable bookingTable, carTable;
+    DefaultTableModel bookingModel, carModel;
 
     public ViewBooking() {
-        setTitle("View Bookings");
-        setSize(700, 400);
+        setTitle("View Bookings and Cars");
+        setSize(800, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //setLayout(new BorderLayout());
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        // Table setup
-        model = new DefaultTableModel();
-        table = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        // Booking table
+        bookingModel = new DefaultTableModel();
+        bookingTable = new JTable(bookingModel);
+        JScrollPane bookingScrollPane = new JScrollPane(bookingTable);
+        bookingScrollPane.setBorder(BorderFactory.createTitledBorder("Bookings"));
+        add(bookingScrollPane, BorderLayout.NORTH);
 
-        // Load data
+        // Car table
+        carModel = new DefaultTableModel();
+        carTable = new JTable(carModel);
+        JScrollPane carScrollPane = new JScrollPane(carTable);
+        carScrollPane.setBorder(BorderFactory.createTitledBorder("Cars"));
+        add(carScrollPane, BorderLayout.CENTER);
+
         loadBookingData();
+        loadCarData();
 
         setVisible(true);
     }
 
     void loadBookingData() {
         try {
-            DBHelper dbHelper = new DBHelper();
+            DBCon dbHelper = new DBCon();
             Connection conn = dbHelper.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT booking_id, amount, return_date, booking_status,registration_number,licence_number, FROM booking");
+            ResultSet rs = stmt.executeQuery("SELECT booking_id, amount, return_date, booking_status, registration_number, licence_number FROM booking");
 
-            // Add column names
-            model.addColumn("Booking ID");
-            model.addColumn("Amount");
-            model.addColumn("Return Date");
-            model.addColumn("Booking Status");
-          model.addColumn("Registration Number");
-          model.addColumn("licence Number");
+            bookingModel.setColumnIdentifiers(new String[]{"Booking ID", "Amount", "Return Date", "Booking Status", "Registration Number", "Licence Number"});
 
-            // Add rows
             while (rs.next()) {
-                model.addRow(new Object[]{
+                bookingModel.addRow(new Object[]{
                         rs.getInt("booking_id"),
                         rs.getDouble("amount"),
                         rs.getString("return_date"),
                         rs.getString("booking_status"),
-                  rs.getString("registration_number"),
-                  rs.getString("licence_number")
+                        rs.getString("registration_number"),
+                        rs.getString("licence_number")
                 });
             }
 
             rs.close();
+            stmt.close();
             conn.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error loading bookings: " + e.getMessage());
+        }
+    }
+
+    void loadCarData() {
+        try {
+            DBCon dbHelper = new DBCon();
+            Connection conn = dbHelper.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT registration_number, make, model, model_year, mileage, availability FROM car");
+
+            carModel.setColumnIdentifiers(new String[]{"Registration Number", "Make", "Model", "Year", "Mileage", "Available"});
+
+            while (rs.next()) {
+                String availability = rs.getString("availability");
+                carModel.addRow(new Object[]{
+                        rs.getString("registration_number"),
+                        rs.getString("make"),
+                        rs.getString("model"),
+                        rs.getInt("model_year"),
+                        rs.getInt("mileage"),
+                        availability
+                });
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading cars: " + e.getMessage());
         }
     }
 

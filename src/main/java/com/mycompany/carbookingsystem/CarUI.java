@@ -72,7 +72,7 @@ public class CarUI extends JFrame {
     
     void loadAvailableCars() {
          try {
-        DBHelper dbHelper = new DBHelper(); // create DBHelper instance
+        DBCon dbHelper = new DBCon(); // create DBCon instance
         Connection conn = dbHelper.getConnection();
 
         String sql = "SELECT registration_number, model FROM car WHERE availability='Available'";
@@ -96,7 +96,7 @@ public class CarUI extends JFrame {
 
     void bookCar() {
         try {
-            DBHelper dbHelper = new DBHelper(); 
+            DBCon dbHelper = new DBCon(); 
             Connection conn = dbHelper.getConnection();
             CarItem selectedCar = (CarItem) carBox.getSelectedItem();
             String regNo = selectedCar.registrationNumber;

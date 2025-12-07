@@ -73,8 +73,8 @@ public class CustomerLoginRegister extends JFrame {
 
     void login() {
         try {
-            DBHelper dbHelper = new DBHelper(); // create DBHelper instance
-            Connection conn = dbHelper.getConnection(); // get the actual DB connection
+            DBCon dbHelper = new DBCon(); 
+            Connection conn = dbHelper.getConnection(); 
             
             
             String sql = "SELECT * FROM customer WHERE email_id=? AND driving_licence_number=?";
@@ -101,7 +101,7 @@ public class CustomerLoginRegister extends JFrame {
 
     void register() {
         try {
-             DBHelper dbHelper = new DBHelper(); // create DBHelper instance
+             DBCon dbHelper = new DBCon(); 
             Connection conn = dbHelper.getConnection();
             String sql = "INSERT INTO customer (email_id, first_name, phone_number, driving_licence_number) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
